@@ -1,0 +1,101 @@
+extends layout
+
+block content
+  .login-container
+    .loginCard
+      h3.loginTitle Register for EcoTrack
+      form.loginForm(action="/register", method="POST", enctype="multipart/form-data" id="registerForm")
+        .imagePreviewContainer
+          if file
+            img#avatar-preview.hidden(src="", alt="Avatar Preview")
+          else 
+            img#avatar-preview.hidden(src="/images/avatar.png", alt="Avatar")
+
+        .formInput.avatarInput
+          label(for="avatar") Upload Profile Picture
+          input#avatar(type="file", name="avatar", accept="image/*", onchange="previewImage(event)")
+        .formInput
+          label(for="username") Name
+          input#name(type="text", name="username", required=true, placeholder="Your Name")
+        .formInput
+          label(for="email") Email
+          input#email(type="email", name="email", required=true, placeholder="name@company.com")
+        .formInput
+          label(for="password") Password
+          input#password(type="password", name="password", required=true, placeholder="••••••••")
+        .formInput
+          label(for="confirm-password") Confirm Password
+          input#confirm-password(type="password", name="confirm-password", required=true, placeholder="••••••••")
+        button.form-button(type="submit") Create your account
+      .cardFooter
+        p Already have an account? 
+        a.register-link(href="/login") Login here
+
+  script.
+    document.addEventListener('DOMContentLoaded', function () {
+
+      const registerForm = document.getElementById("registerForm")
+
+
+      if (!registerForm) {
+        console.error('Register form not found!');
+        return;
+      }
+
+      registerForm.addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+         const password = document.querySelector('#password').value;
+        const confirmPassword = document.querySelector('#confirm-password').value;
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+          alert('Passwords do not match. Please try again.');
+          return;
+        }
+
+        const formData = new FormData(registerForm); // Collect form data
+
+        try {
+          const response = await fetch('/register', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            // Handle errors returned by the server
+            alert(data.error || 'An error occurred while registering.');
+            return;
+          }
+
+          // Success feedback
+          alert(data.message || 'Registration successful!');
+          registerForm.reset();
+          window.location.href = '/login'; // Redirect to login page
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Failed to register. Please try again later.');
+        }
+      });
+    });
+
+    function previewImage(event) {
+      const preview = document.getElementById('avatar-preview');
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.classList.remove('hidden');
+          preview.classList.add('rounded-image');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = '';
+        preview.classList.add('hidden');
+        preview.classList.remove('rounded-image');
+      }
+    }

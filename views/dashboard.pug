@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  .containerDashboard
+    h1= title
+
+    div.dashBoardBox
+      .card.user-summary
+        h2 Total Users
+        div.iconGrp
+          img.dashboardIcon(src="/images/profile-user.png", alt="User_Icon")
+          p #{totalUsers} users
+
+      .card.carbon-emission-summary
+        h2 Total Carbon Emission
+        div.iconGrp
+          img.dashboardIcon(src="/images/co2.png", alt="User_Icon")
+          p #{totalCarbonEmission.toFixed(2)} kg CO₂
+
+      // Activity Data
+      .card.activities-summary
+        h2 Activities Summary
+        div.activityBox
+          .activity
+            h4 Driving
+            p Total Amount: #{activityData.Driving.totalAmount}
+            p Total Carbon Emission: #{activityData.Driving.totalCarbonEmission.toFixed(2)} kg CO₂
+          .activity
+            h4 Electricity Usage
+            p Total Amount: #{activityData.ElectricityUsage.totalAmount}
+            p Total Carbon Emission: #{activityData.ElectricityUsage.totalCarbonEmission.toFixed(2)} kg CO₂
+          .activity
+            h4 Waste Disposal
+            p Total Amount: #{activityData.WasteDisposal.totalAmount}
+            p Total Carbon Emission: #{activityData.WasteDisposal.totalCarbonEmission.toFixed(2)} kg CO₂
+
+      // Total Carbon Emission
+      

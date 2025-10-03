@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  div.errorBox
+    .error-container
+      h1 403 - Forbidden
+      img(src='/images/accessDenied.png', alt='Access Denied', class='error-image')
+      p Access Denied, Please signUp to access this page.
+      a.btn.btn-success( href="/") Back to Home

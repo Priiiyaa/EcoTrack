@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  .container
+
+    // Flexbox container for logo and title
+    .header-container
+      img(src='/images/eco_icon.png', alt='EcoTrack Icon', class='logo')
+      h1 EcoTrack - Carbon Footprint Tracker
+
+    // Quote section
+    .quote-container
+      p#quote(style='text-align: right; font-style: italic;')  // Initial quote placeholder
+      p#author(style='text-align: right; font-style: italic;') // Initial author placeholder
+
+    div.mainPara
+      p Welcome to EcoTrack! EcoTrack is an innovative platform designed to empower individuals and communities in the fight against climate change. In today’s world, understanding our carbon footprint is more critical than ever. This project aims to provide users with the tools and resources needed to measure and track their daily carbon emissions based on various activities.
+      p Enter your activity and the amount to find out how much CO2 you are contributing to the environment. Let's work together to reduce our footprint! 
+
+    form(action='/log', method='POST', id='carbonForm')
+      // Flex row for upload images and slect date 
+      .form-row
+        
+        .form-group
+          label(for='date') Select Date:
+          .file-input
+          input(type='date', name='date', id='date', required)
+
+      // Flex row for activity and amount input
+      .form-row
+        .form-group
+          label(for='activity') Select Activity:
+          select(name='activity', id='activity')
+            option(value='Driving') Driving (km)
+            option(value='ElectricityUsage') Electricity Usage (kWh)
+            option(value='WasteDisposal') Waste Disposal (kg)
+
+        .form-group
+          label(for='amount') Enter Amount:
+          input(type='number', name='amount', placeholder='e.g., 10', required)
+
+      button(type='submit') Calculate Carbon Footprint
+
+    // Modal Dialog Box for displaying results
+    .modal#resultModal
+      .modal-content
+        .modal-text
+          h2 Carbon Footprint Result
+          p#resultActivity Activity: 
+          p#resultAmount Amount: 
+          p#resultCarbonEmission Carbon Emission: 
+        span#closeModal(class='close') ×
+
+    footer
+      span 🌍 
+      span(class='footertxt') Reduce your carbon footprint by making small changes! 
+       span 🌍 

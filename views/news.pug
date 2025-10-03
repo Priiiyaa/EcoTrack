@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .containerNews
+    .header-container.mt-3
+      h1 Latest Environment News
+    .row
+      each article in articles
+        .col-md-3.my-3
+          .card.newsCard
+            .badge-container
+              span.badge.rounded-pill.bg-danger= article.source.name || 'Unknown'
+            if article.urlToImage
+              img.newsImg(src=article.urlToImage, alt="News Image")
+            else
+              img.newsImg(src="/images/Ecotrack.png", alt="Placeholder Image")
+            .card-body
+              h5.card-title= article.title || 'No Title Available'
+              p.card-text= article.description || 'No Description Available'
+              p.card-text
+                small= `By ${article.author || 'unknown'} on ${new Date(article.publishedAt).toUTCString()}`
+              a.btn.btn-dark(href=article.newsUrl, target="_blank") Read More

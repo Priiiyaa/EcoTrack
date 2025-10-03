@@ -1,0 +1,76 @@
+extends layout
+
+block content
+  .login-container
+    .loginCard
+      h3.loginTitle Login to EcoTrack
+      form(action="/login", method="POST", id= "loginForm")
+        .formInput
+          label(for="email") Email
+          input#email(type="email", name="email", required=true, placeholder="name@company.com")
+        .formInput
+          label(for="password") Password
+          input#password(type="password", name="password", required=true, placeholder="••••••••")
+        button.form-button(type="submit") Login to your account
+      button.form-button(onclick="handleGuestLogin()") Login as Guest
+      .cardFooter
+        p Don't have an account? 
+        a.register-link(href="/register") Register here
+
+  script.
+    async function handleGuestLogin() {
+      try {
+        const response = await fetch('/guest-login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          alert(`Guest login failed: ${error}`);
+          return;
+        }
+
+        alert('Logged in as Guest! Redirecting to Home Page...');
+        window.location.href = '/'; // Redirect to the Home page
+      } catch (error) {
+        console.error('Error during guest login:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+      event.preventDefault(); 
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        alert('Please fill in both email and password.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          alert(`Login failed: ${error}`);
+          return;
+        }
+
+        alert('Login successful! Redirecting to Home Page...');
+        window.location.href = '/'; // Redirect to Home page
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    });

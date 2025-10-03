@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  div.errorBox
+    .error-container
+      h1 404 - Page Not Found
+      img(src='/images/error_404.png', alt='Page Not Found', class='error-image')
+      p Sorry, the page you are looking for doesn't exist.
+      a.btn.btn-success( href="/") Back to Home
+

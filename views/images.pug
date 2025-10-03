@@ -1,0 +1,13 @@
+extends layout
+
+block content
+ .image-container
+  h1.images-title Uploaded Images
+  if images.length > 0
+    .images-container
+      each image in images
+        div.image-item
+          img.image-thumbnail(src=image, alt="Uploaded Image")
+  else
+    p.no-images-message No images have been uploaded yet.
+ a.back-home-link(href='/') Go Back to Home

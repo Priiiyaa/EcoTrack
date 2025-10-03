@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  .login-container
+    .loginCard
+      h3.loginTitle Admin Login EcoTrack
+      form(action="/admin", method="POST", id= "AdminLoginForm")
+        .formInput
+          label(for="password") Password
+          input#password(type="password", name="password", required=true, placeholder="••••••••")
+        button.form-button(type="submit") Login as Admin
+
+  script.
+
+    document.getElementById('AdminLoginForm').addEventListener('submit', async function (event) {
+      event.preventDefault(); 
+
+      const password = document.getElementById('password').value;
+
+      if ( !password) {
+        alert('Please fill in both email and password.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/admin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ password }),
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          alert(`Admin Login failed: ${error}`);
+          return;
+        }
+
+        alert('Login successful! Redirecting to Dashboard...');
+        window.location.href = '/dashboard'; 
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
